@@ -62,7 +62,7 @@ extend-select = [
 ]
 preview = true
 fixable = ["ALL"]
-ignore = ["E741", "ISC001"]
+ignore = ["E741", "ISC001", "T201", "T203"]
 
 [tool.ruff.lint.extend-per-file-ignores]
 # Disable for all files in the tests directory

@@ -5,11 +5,13 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
-  "matplotlib>=3.10.1",
   "numpy>=2.2.4",
   "qiskit-aer>=0.17.0",
   "qiskit[visualization]>=2.0.0",
 ]
+
+[project.optional-dependencies]
+mpl = ["pyqt6>=6.9.0"]
 
 [dependency-groups]
 dev = ["mypy>=1.15.0", "ruff>=0.11.4"]

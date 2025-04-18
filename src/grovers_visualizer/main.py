@@ -14,8 +14,10 @@ from matplotlib.axes import Axes
 from qiskit import QuantumCircuit
 from qiskit_aer import AerSimulator
 
+from grovers_visualizer.state import QubitState
 
-def x(qc: QuantumCircuit, target_state: str) -> None:
+
+def x(qc: QuantumCircuit, target_state: QubitState) -> None:
     for i, bit in enumerate(reversed(target_state)):
         if bit == "0":
             qc.x(i)
@@ -33,7 +35,7 @@ def ccz(qc: QuantumCircuit, n: int) -> None:
         qc.h(n - 1)
 
 
-def oracule(qc: QuantumCircuit, target_state: str) -> None:
+def oracule(qc: QuantumCircuit, target_state: QubitState) -> None:
     n = len(target_state)
 
     x(qc, target_state)
@@ -56,7 +58,7 @@ def diffusion(qc: QuantumCircuit, n: int) -> None:
     qc.h(range(n))
 
 
-def grover_search(n: int, target_state: str) -> QuantumCircuit:
+def grover_search(n: int, target_state: QubitState) -> QuantumCircuit:
     qc = QuantumCircuit(n, n)
 
     qc.h(range(n))
@@ -97,7 +99,7 @@ def main() -> None:
     plt.ion()
 
     for state in states:
-        qc = grover_search(n_qubits, state)
+        qc = grover_search(n_qubits, QubitState(state))
 
         print(qc.draw("text"))
 

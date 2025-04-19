@@ -35,7 +35,7 @@ def ccz(qc: QuantumCircuit, n: int) -> None:
         qc.h(n - 1)
 
 
-def oracule(qc: QuantumCircuit, target_state: QubitState) -> None:
+def oracle(qc: QuantumCircuit, target_state: QubitState) -> None:
     n = len(target_state)
 
     x(qc, target_state)
@@ -67,7 +67,7 @@ def grover_search(n: int, target_state: QubitState) -> QuantumCircuit:
 
     iterations = int(np.floor(np.pi / 4 * np.sqrt(num_states)))
     for _ in range(iterations):
-        oracule(qc, target_state)
+        oracle(qc, target_state)
         diffusion(qc, n)
 
     qc.measure(range(n), range(n))

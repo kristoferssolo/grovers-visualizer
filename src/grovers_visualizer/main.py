@@ -77,7 +77,7 @@ def all_states(n_qubits: int) -> Iterator[QubitState]:
 
 def main() -> None:
     shots = 128
-    target = QubitState("1" * 4)
+    target = QubitState("1010")
     n_qubits = len(target)
 
     qc = grover_search(target, iterations=1)
@@ -103,8 +103,7 @@ def main() -> None:
     ax.set_ylim(0, shots)
 
     for i, measured in enumerate(memory, 1):
-        measured_be = measured[::-1]  # Qiskit returns little-endian
-        counts[measured_be] += 1
+        counts[measured] += 1
         for bar, state in zip(bars, all_states, strict=False):
             bar.set_height(counts[state])
             bar.set_color("orange" if state == str(target) else "skyblue")

@@ -8,7 +8,7 @@ from matplotlib.patches import Circle
 from qiskit.quantum_info import Statevector
 
 from .state import QubitState
-from .utils import get_bar_color, is_optimal_iteration
+from .utils import get_bar_color, is_optimal_iteration, sign
 
 
 def plot_amplitudes_live(
@@ -34,6 +34,8 @@ def plot_amplitudes_live(
     for l in ax.lines:  # Remove previous mean line(s)
         l.remove()
 
+    # Draw axes and mean
+    ax.axhline(0, color="black", linewidth=0.5)
     ax.axhline(float(mean), color="red", linestyle="--", label="Mean")
 
     if not ax.get_legend():
@@ -71,7 +73,7 @@ def draw_grover_circle(
 
     angle = state_angle + iteration * theta
     x, y = cos(angle), sin(angle)
-    is_optimal = optimal_iterations and is_optimal_iteration(iteration, optimal_iterations)
+    is_optimal = is_optimal_iteration(iteration, optimal_iterations)
 
     # Arrow color: green at optimal, blue otherwise
     color = "green" if is_optimal else "blue"
@@ -79,6 +81,20 @@ def draw_grover_circle(
 
     # Probability of target state is y^2
     prob = y**2
+
+    # Draw the value at the tip of the arrow
+    ax.text(
+        x,
+        y,
+        f"{prob * sign(y):.2f}",
+        color=color,
+        fontsize=10,
+        ha="left" if x >= 0 else "right",
+        va="bottom" if y >= 0 else "top",
+        fontweight="bold",
+        bbox={"facecolor": "white", "edgecolor": "none", "alpha": 0.7, "boxstyle": "round,pad=0.2"},
+    )
+
     ax.set_title(
-        f"Grover State Vector Rotation\nIteration {iteration} | Probability of target: {prob:.2f}{' (optimal)' if is_optimal else ''}"
+        f"Grover State Vector Rotation\nIteration {iteration} | Probability of target: {prob}{' (optimal)' if is_optimal else ''}"
     )

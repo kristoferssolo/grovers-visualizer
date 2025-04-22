@@ -66,7 +66,7 @@ def main() -> None:
         plot_amplitudes_live(ax_bar, bars, sv, basis_states, step_label, iteration, target_state, optimal_iterations)
         draw_grover_circle(ax_circle, iteration, optimal_iterations, theta, state_angle)
 
-        plt.pause(1)
+        plt.pause(0.5)
 
     # Start with Hadamard
     qc = QuantumCircuit(n_qubits)

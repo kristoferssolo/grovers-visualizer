@@ -1,6 +1,6 @@
 from collections.abc import Iterator
 from itertools import product
-from math import floor, pi, sqrt
+from math import copysign, floor, pi, sqrt
 
 from .state import QubitState
 
@@ -17,7 +17,7 @@ def optimal_grover_iterations(n_qubits: int) -> int:
 
 
 def is_optimal_iteration(iteration: int, optimal_iteration: int) -> bool:
-    return iteration % optimal_iteration == 0 and iteration != 0
+    return iteration == optimal_iteration
 
 
 def get_bar_color(state: str, target_state: QubitState | None, iteration: int, optimal_iteration: int | None) -> str:
@@ -27,3 +27,7 @@ def get_bar_color(state: str, target_state: QubitState | None, iteration: int, o
     if optimal_iteration and is_optimal_iteration(iteration, optimal_iteration):
         return "green"
     return "orange"
+
+
+def sign(x: float) -> int:
+    return int(copysign(1, x))

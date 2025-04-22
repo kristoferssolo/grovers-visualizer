@@ -1,6 +1,6 @@
 from qiskit import QuantumCircuit
 
-from grovers_visualizer.state import QubitState
+from .state import QubitState
 
 
 def encode_target_state(qc: QuantumCircuit, target_state: QubitState) -> None:

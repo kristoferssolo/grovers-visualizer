@@ -14,9 +14,7 @@ def apply_phase_inversion(qc: QuantumCircuit, n: int) -> None:
     """Apply a multi-controlled phase inversion (Z) to the marked state."""
     if n == 1:
         qc.z(0)
-    elif n == 2:
-        qc.cz(0, 1)
-    else:
-        qc.h(n - 1)
-        qc.mcx(list(range(n - 1)), n - 1)  # multi-controlled X (Toffoli for 3 qubits)
-        qc.h(n - 1)
+        return
+    qc.h(n - 1)
+    qc.mcx(list(range(n - 1)), n - 1)
+    qc.h(n - 1)

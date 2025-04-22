@@ -29,7 +29,16 @@ class QubitState:
     def __eq__(self, value: object, /) -> bool:
         if isinstance(value, QubitState):
             return self.bits == value.bits
-        return False
+        if isinstance(value, str):
+            return self.bits == value
+        return NotImplemented
+
+    def __lt__(self, value: object, /) -> bool:
+        if isinstance(value, QubitState):
+            return int(self.bits, 2) < int(value.bits, 2)
+        if isinstance(value, str) and all(b in "01" for b in value):
+            return int(self.bits, 2) < int(value, 2)
+        return NotImplemented
 
     @override
     def __hash__(self) -> int:

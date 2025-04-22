@@ -37,7 +37,7 @@ def main() -> None:
     fig: Figure
     ax_bar: Axes
     ax_circle: Axes
-    fig, (ax_bar, ax_circle) = plt.subplots(1, 2, figsize=(12, 4))
+    fig, (ax_bar, ax_circle) = plt.subplots(1, 2, width_ratios=(3, 1), figsize=(12, 4))
     bars = ax_bar.bar(basis_states, [0] * len(basis_states), color="skyblue")
     ax_bar.set_ylim(-1, 1)
     ax_bar.set_title("Amplitudes (example)")

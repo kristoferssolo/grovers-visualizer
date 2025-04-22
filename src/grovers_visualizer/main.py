@@ -10,6 +10,7 @@ from collections.abc import Iterator
 from itertools import product
 from math import floor, pi, sqrt
 
+import matplotlib.pyplot as plt
 from matplotlib.axes import Axes
 from qiskit import QuantumCircuit
 from qiskit_aer import AerSimulator
@@ -27,7 +28,7 @@ def oracle(qc: QuantumCircuit, target_state: QubitState) -> None:
 
 
 def diffusion(qc: QuantumCircuit, n: int) -> None:
-    """Apply the Grovers diffusion operator"""
+    """Apply the Grovers diffusion operator."""
     qc.h(range(n))
     qc.x(range(n))
     apply_phase_inversion(qc, n)
@@ -75,49 +76,43 @@ def all_states(n_qubits: int) -> Iterator[QubitState]:
 
 
 def main() -> None:
-    shots = 20
-    target = QubitState("11111111111111111")
+    shots = 128
+    target = QubitState("1" * 4)
     n_qubits = len(target)
 
-    qc = grover_search(target, iterations=4)
-    print(qc)
+    qc = grover_search(target, iterations=1)
     simulator = AerSimulator()
     job = simulator.run(qc, shots=shots, memory=True)
     result = job.result()
     memory = result.get_memory(qc)  # List of measurement results, one per shot
-    counts = result.get_counts(qc)  # Dict: state string -> count
-    print(counts)
 
-    # print(qc.draw("text"))
+    print(qc)  # draw scheme
+
     print(f"Target: {target}")
 
     # Ensure all possible states are present in the bar chart
     all_states = ["".join(bits) for bits in product("01", repeat=n_qubits)]
     counts = dict.fromkeys(all_states, 0)
-    # print(counts)
 
-    # plt.ion()
-    # _, ax = plt.subplots(figsize=(6, 2))
-    # bars = ax.bar(all_states, [0] * len(all_states), color="skyblue")
-    # ax.set_xlabel("Measured State")
-    # ax.set_ylabel("Counts")
-    # ax.set_title(f"Measurement Variability for Target: {target}")
-    # ax.set_ylim(0, shots)
+    plt.ion()
+    _, ax = plt.subplots(figsize=(6, 2))
+    bars = ax.bar(all_states, [0] * len(all_states), color="skyblue")
+    ax.set_xlabel("Measured State")
+    ax.set_ylabel("Counts")
+    ax.set_title(f"Measurement Variability for Target: {target}")
+    ax.set_ylim(0, shots)
 
     for i, measured in enumerate(memory, 1):
-        pass
-        # print(measured)
-        # measured_be = measured[::-1]
-        # if measured_be in counts:
-        #     counts[measured_be] += 1
-        # for bar, state in zip(bars, all_states, strict=False):
-        #     bar.set_height(counts[state])
-        #     bar.set_color("orange" if state == str(target) else "skyblue")
-        # ax.set_title(f"Measurement Variability for Target: {target} (Shot {i}/{shots})")
-        # plt.pause(1)
+        measured_be = measured[::-1]  # Qiskit returns little-endian
+        counts[measured_be] += 1
+        for bar, state in zip(bars, all_states, strict=False):
+            bar.set_height(counts[state])
+            bar.set_color("orange" if state == str(target) else "skyblue")
+        ax.set_title(f"Measurement Variability (Shot {i}/{shots})\nTarget: {target}")
+        plt.pause(0.5)
 
-    # plt.ioff()
-    # plt.show()
+    plt.ioff()
+    plt.show()
 
 
 if __name__ == "__main__":

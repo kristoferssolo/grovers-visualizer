@@ -6,7 +6,7 @@ from .state import QubitState
 def encode_target_state(qc: QuantumCircuit, target_state: QubitState) -> None:
     """Apply X gates to qubits where the target state bit is '0'."""
     for i, bit in enumerate(reversed(target_state)):
-        if bit == "0":
+        if bit == 0:
             qc.x(i)
 
 

@@ -7,8 +7,8 @@ from .state import QubitState
 
 def all_states(n_qubits: int) -> Iterator[QubitState]:
     """Generate all possible QubitStates for n_qubits."""
-    for bits in product("01", repeat=n_qubits):
-        yield QubitState("".join(bits))
+    for bits in product((0, 1), repeat=n_qubits):
+        yield QubitState(bits)
 
 
 def optimal_grover_iterations(n_qubits: int) -> int:

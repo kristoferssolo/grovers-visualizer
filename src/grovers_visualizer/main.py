@@ -10,6 +10,7 @@ from math import asin, sqrt
 from typing import TYPE_CHECKING, Callable
 
 import matplotlib.pyplot as plt
+from matplotlib.backend_bases import KeyEvent
 from qiskit import QuantumCircuit
 from qiskit.quantum_info import Statevector
 
@@ -34,10 +35,8 @@ def main() -> None:
     state_angle = 0.5 * theta
 
     plt.ion()
-    fig: Figure
-    ax_bar: Axes
-    ax_circle: Axes
-    fig, (ax_bar, ax_circle) = plt.subplots(1, 2, width_ratios=(3, 1), figsize=(12, 4))
+    subplt: tuple[Figure, tuple[Axes, Axes]] = plt.subplots(1, 2, width_ratios=(3, 1), figsize=(12, 4))
+    fig, (ax_bar, ax_circle) = subplt
     bars = ax_bar.bar(basis_states, [0] * len(basis_states), color="skyblue")
     ax_bar.set_ylim(-1, 1)
     ax_bar.set_title("Amplitudes (example)")
@@ -63,7 +62,7 @@ def main() -> None:
     iteration = 1
     running = True
 
-    def on_key(event) -> None:
+    def on_key(event: KeyEvent) -> None:
         nonlocal running
         if event.key == "q":
             running = False

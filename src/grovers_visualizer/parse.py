@@ -34,7 +34,7 @@ def parse_args() -> Args:
     )
     ns = parser.parse_args()
     return Args(
-        target=QubitState(ns.target),
+        target=QubitState.from_str(ns.target),
         iterations=ns.iterations,
         speed=ns.speed,
     )

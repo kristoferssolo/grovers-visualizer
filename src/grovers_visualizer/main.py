@@ -7,21 +7,18 @@ using matplotlib.
 """
 
 from math import asin, sqrt
-from typing import TYPE_CHECKING, Callable
+from typing import Callable
 
 import matplotlib.pyplot as plt
 from matplotlib.backend_bases import KeyEvent
+from matplotlib.gridspec import GridSpec
 from qiskit import QuantumCircuit
 from qiskit.quantum_info import Statevector
 
 from grovers_visualizer.circuit import diffusion, oracle
 from grovers_visualizer.parse import parse_args
-from grovers_visualizer.plot import draw_grover_circle, plot_amplitudes_live
+from grovers_visualizer.plot import SinePlotData, plot_amplitudes, plot_circle, plot_sine
 from grovers_visualizer.utils import all_states, optimal_grover_iterations
-
-if TYPE_CHECKING:
-    from matplotlib.axes import Axes
-    from matplotlib.figure import Figure
 
 
 def main() -> None:
@@ -35,13 +32,18 @@ def main() -> None:
     state_angle = 0.5 * theta
 
     plt.ion()
-    subplt: tuple[Figure, tuple[Axes, Axes]] = plt.subplots(1, 2, width_ratios=(3, 1), figsize=(12, 4))
-    fig, (ax_bar, ax_circle) = subplt
+    fig = plt.figure(figsize=(14, 6))
+    gs = GridSpec(2, 2, width_ratios=(3, 1), figure=fig)
+    ax_bar = fig.add_subplot(gs[0, 0])
+    ax_sine = fig.add_subplot(gs[1, 0])
+    ax_circle = fig.add_subplot(gs[:, 1])
     bars = ax_bar.bar(basis_states, [0] * len(basis_states), color="skyblue")
     ax_bar.set_ylim(-1, 1)
     ax_bar.set_title("Amplitudes (example)")
 
-    def iterate_and_plot(
+    sine_data = SinePlotData()
+
+    def plot_bar(
         operation: Callable[[QuantumCircuit], None] | None,
         step_label: str,
         iteration: int,
@@ -49,15 +51,12 @@ def main() -> None:
         if operation is not None:
             operation(qc)
         sv = Statevector.from_instruction(qc)
-        plot_amplitudes_live(ax_bar, bars, sv, basis_states, step_label, iteration, target_state, optimal_iterations)
-        draw_grover_circle(ax_circle, iteration, optimal_iterations, theta, state_angle)
-
-        plt.pause(args.speed)
+        plot_amplitudes(ax_bar, bars, sv, basis_states, step_label, iteration, target_state, optimal_iterations)
 
     # Start with Hadamard
     qc = QuantumCircuit(n_qubits)
     qc.h(range(n_qubits))
-    iterate_and_plot(None, "Hadamard (Initialization)", 0)
+    plot_bar(None, "Hadamard (Initialization)", 0)
 
     iteration = 1
     running = True
@@ -69,8 +68,14 @@ def main() -> None:
 
     cid = fig.canvas.mpl_connect("key_press_event", on_key)
     while plt.fignum_exists(fig.number) and running:
-        iterate_and_plot(lambda qc: oracle(qc, target_state), "Oracle (Query Phase)", iteration)
-        iterate_and_plot(lambda qc: diffusion(qc, n_qubits), "Diffusion (Inversion Phase)", iteration)
+        plot_bar(lambda qc: oracle(qc, target_state), "Oracle (Query Phase)", iteration)
+        plot_bar(lambda qc: diffusion(qc, n_qubits), "Diffusion (Inversion Phase)", iteration)
+
+        plot_circle(ax_circle, iteration, optimal_iterations, theta, state_angle)
+        sine_data.calc_and_append_probability(iteration, theta)
+        plot_sine(ax_sine, sine_data)
+
+        plt.pause(args.speed)
 
         iteration += 1
         if args.iterations > 0 and iteration > args.iterations:

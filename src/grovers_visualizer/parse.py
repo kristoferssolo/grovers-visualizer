@@ -9,6 +9,7 @@ class Args:
     target: QubitState
     iterations: int
     speed: float
+    ui: bool
 
 
 def parse_args() -> Args:
@@ -32,9 +33,11 @@ def parse_args() -> Args:
         default=0.5,
         help="Pause duration (seconds) between steps (deafult: 0.5)",
     )
+    parser.add_argument("--ui", action="store_true", help="Run with DearPyGui UI")
     ns = parser.parse_args()
     return Args(
         target=QubitState.from_str(ns.target),
         iterations=ns.iterations,
         speed=ns.speed,
+        ui=ns.ui,
     )

@@ -5,20 +5,21 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
-  "argparse>=1.4.0",
-  "numpy>=2.2.4",
-  "qiskit-aer>=0.17.0",
-  "qiskit[visualization]>=2.0.0",
+  "argparse==1.4.0",
+  "numpy==2.2.4",
+  "pyqt6==6.9.0",
+  "qiskit-aer==0.17.0",
+  "qiskit[visualization]==2.0.0",
 ]
 
 [project.scripts]
 grovers-visualizer = "grovers_visualizer.main:main"
 
 [project.optional-dependencies]
-mpl = ["pyqt6>=6.9.0"]
+ui = ["dearpygui==2.0.0"]
 
 [dependency-groups]
-dev = ["mypy>=1.15.0", "ruff>=0.11.4"]
+dev = ["mypy~=1.15", "ruff~=0.11"]
 
 [build-system]
 requires = ["hatchling"]

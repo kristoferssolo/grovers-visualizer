@@ -1,6 +1,6 @@
 from collections.abc import Iterator
 from itertools import product
-from math import copysign, floor, pi, sqrt
+from math import floor, pi, sqrt
 
 from .state import QubitState
 
@@ -27,7 +27,3 @@ def get_bar_color(state: str, target_state: QubitState | None, iteration: int, o
     if optimal_iteration and is_optimal_iteration(iteration, optimal_iteration):
         return "green"
     return "orange"
-
-
-def sign(x: float) -> int:
-    return int(copysign(1, x))

@@ -9,7 +9,7 @@ from matplotlib.patches import Circle
 from qiskit.quantum_info import Statevector
 
 from .state import QubitState
-from .utils import get_bar_color, is_optimal_iteration, sign
+from .utils import get_bar_color, is_optimal_iteration
 
 
 def plot_amplitudes(
@@ -87,7 +87,7 @@ def plot_circle(
     ax.text(
         x,
         y,
-        f"{prob * sign(y):.2f}",
+        f"{prob:.2f}",
         color=color,
         fontsize=10,
         ha="left" if x >= 0 else "right",

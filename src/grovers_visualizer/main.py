@@ -17,3 +17,7 @@ def main() -> None:
         run_dpg_ui(args)
     else:
         run_cli(args)
+
+
+if __name__ == "__main__":
+    main()

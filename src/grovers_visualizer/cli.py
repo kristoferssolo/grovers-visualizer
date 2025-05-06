@@ -73,7 +73,3 @@ def run_cli(args: Args) -> None:
 
     fig.canvas.mpl_disconnect(cid)
     plt.ioff()
-
-
-if __name__ == "__main__":
-    main()

@@ -1,6 +1,8 @@
+import tomllib
 from collections.abc import Iterator
 from itertools import product
 from math import floor, pi, sqrt
+from pathlib import Path
 
 from .state import QubitState
 
@@ -27,3 +29,16 @@ def get_bar_color(state: str, target_state: QubitState | None, iteration: int, o
     if optimal_iteration and is_optimal_iteration(iteration, optimal_iteration):
         return "green"
     return "orange"
+
+
+def get_app_version(pyproject_path: str = "pyproject.toml") -> str:
+    """Reads the version from the [project] section of pyproject.toml."""
+    path = Path(pyproject_path)
+    if not path.is_file():
+        raise FileNotFoundError(f"{pyproject_path} not found.")
+    with path.open("rb") as f:
+        data = tomllib.load(f)
+    try:
+        return str(data["project"]["version"])
+    except KeyError:
+        raise KeyError("Version not found in [project] section of pyproject.toml.")

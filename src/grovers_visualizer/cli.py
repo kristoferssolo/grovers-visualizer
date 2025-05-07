@@ -7,8 +7,8 @@ from matplotlib.gridspec import GridSpec
 from qiskit import QuantumCircuit
 from qiskit.quantum_info import Statevector
 
+from .args import Args
 from .circuit import diffusion, oracle
-from .parse import Args
 from .plot import SinePlotData, plot_amplitudes, plot_circle, plot_sine
 from .utils import all_states, optimal_grover_iterations
 

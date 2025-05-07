@@ -6,8 +6,8 @@ simulation using Qiskit's Aer simulator, and visualizes the results
 using matplotlib.
 """
 
+from .args import parse_args
 from .cli import run_cli
-from .parse import parse_args
 from .ui import run_dpg_ui
 
 

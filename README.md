@@ -54,13 +54,15 @@ uvx "grovers-visualizer[ui]" --ui
 
 Flags:
 
-• `-t, --target`  
+- `TARGET`  
  Target bit‐string (e.g. `010`). Length determines number of qubits.  
-• `-s, --speed`  
+- `-s, --speed SPEED`  
  Delay between iterations (seconds). Default `0.5`.  
-• `-i, --iterations`  
+- `-i, --iterations ITERATIONS`  
  Max iterations; `0` means use the optimal $\lfloor\frac\pi4\sqrt{2^n}\rfloor$.  
-• `--ui`  
+- `-p, --phase PHASE`  
+  The phase $\psi$ (in radians) used for both the oracle and diffusion steps. Defaults to $\pi$ (i.e. a sign-flip, $e^{i\pi}=-1$).
+- `--ui`  
  Launch the optional DearPyGui GUI (requires the `[ui]` extra) (WIP).
 
 ### GUI Mode (WIP)

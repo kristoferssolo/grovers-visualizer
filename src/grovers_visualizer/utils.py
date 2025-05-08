@@ -1,8 +1,7 @@
-import tomllib
 from collections.abc import Iterator
+from importlib.metadata import PackageNotFoundError, version
 from itertools import product
 from math import floor, pi, sqrt
-from pathlib import Path
 
 from .state import QubitState
 
@@ -31,14 +30,12 @@ def get_bar_color(state: str, target_state: QubitState | None, iteration: int, o
     return "orange"
 
 
-def get_app_version(pyproject_path: str = "pyproject.toml") -> str:
-    """Reads the version from the [project] section of pyproject.toml."""
-    path = Path(pyproject_path)
-    if not path.is_file():
-        raise FileNotFoundError(f"{pyproject_path} not found.")
-    with path.open("rb") as f:
-        data = tomllib.load(f)
+def get_app_version() -> str:
+    """Return the installed package version, e.g. '0.4.0'.
+
+    Falls back to 'unknown' if not installed as a distribution.
+    """
     try:
-        return str(data["project"]["version"])
-    except KeyError:
-        raise KeyError("Version not found in [project] section of pyproject.toml.")
+        return version("grovers-visualizer")
+    except PackageNotFoundError:
+        return "unknown"

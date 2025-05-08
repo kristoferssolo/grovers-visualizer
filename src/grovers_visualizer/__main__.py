@@ -7,7 +7,7 @@ simulation using Qiskit's Aer simulator, and visualizes the results
 using matplotlib.
 """
 
-from .main import main
+from grovers_visualizer.main import main
 
 if __name__ == "__main__":
     main()

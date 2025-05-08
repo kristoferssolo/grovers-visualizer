@@ -10,11 +10,11 @@ def is_dearpygui_available() -> bool:
         return False
 
 
-def run_dpg_ui(args: Args) -> None:
+def run_dpg_ui(_args: Args) -> None:
     if not is_dearpygui_available():
         print("DearPyGui is not installed. Install with: pip install 'grovers-visualizer[ui]'")
         return
 
     from .dpg import run_dearpygui_ui
 
-    run_dearpygui_ui(args)
+    run_dearpygui_ui()

@@ -14,7 +14,7 @@ def all_states(n_qubits: int) -> Iterator[QubitState]:
 
 def optimal_grover_iterations(n_qubits: int) -> int:
     """Return the optimal number of Grover iterations for n qubits."""
-    return floor(pi / 4 * sqrt(2**n_qubits))
+    return floor(pi / 4 * sqrt(2.0**n_qubits))
 
 
 def is_optimal_iteration(iteration: int, optimal_iteration: int) -> bool:

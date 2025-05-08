@@ -1,6 +1,6 @@
 [project]
 name = "grovers-visualizer"
-version = "0.4.2"
+version = "0.4.3"
 description = "A tiny Python package that steps through Grover’s Search algorithm."
 readme = "README.md"
 requires-python = ">=3.10"

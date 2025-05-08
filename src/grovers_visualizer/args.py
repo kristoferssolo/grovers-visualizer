@@ -1,3 +1,4 @@
+import math
 from argparse import ArgumentParser
 from dataclasses import dataclass
 
@@ -11,6 +12,7 @@ class Args:
     iterations: int
     speed: float
     ui: bool
+    phase: float
 
 
 def parse_args() -> Args:
@@ -26,6 +28,7 @@ def parse_args() -> Args:
         iterations=ns.iterations,
         speed=ns.speed,
         ui=ns.ui,
+        phase=ns.phase,
     )
 
 
@@ -61,4 +64,15 @@ def parse_cli(base_parser: ArgumentParser) -> None:
         default=0.5,
         help="Pause duration (seconds) between steps (deafult: 0.5)",
     )
+    parser.add_argument(
+        "-p",
+        "--phase",
+        type=float,
+        default=math.pi,
+        help=(
+            "The phase φ (in radians) used for the oracle and diffusion steps. "
+            "Defaults to π, which implements the usual sign flip e^(iπ) = -1."
+        ),
+    )
+
     parser.add_argument("--ui", action="store_true", help="Run with DearPyGui UI")

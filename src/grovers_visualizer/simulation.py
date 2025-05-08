@@ -1,3 +1,4 @@
+import math
 from collections.abc import Iterator
 from itertools import count
 
@@ -9,7 +10,12 @@ from grovers_visualizer.circuit import diffusion_circuit, oracle_circuit
 from grovers_visualizer.state import QubitState
 
 
-def grover_evolver(target: QubitState, max_iterations: int = 0) -> Iterator[tuple[int, Statevector]]:
+def grover_evolver(
+    target: QubitState,
+    max_iterations: int = 0,
+    *,
+    phase: float = math.pi,
+) -> Iterator[tuple[int, Statevector]]:
     """Yields (iteration, statevector) pairs.
 
     - iteration=0 is the uniform-Hadamard initialization
@@ -24,8 +30,8 @@ def grover_evolver(target: QubitState, max_iterations: int = 0) -> Iterator[tupl
     sv = Statevector.from_instruction(qc)
     yield 0, sv
 
-    oracle_op = Operator(oracle_circuit(target))
-    diffusion_op = Operator(diffusion_circuit(n_qubits))
+    oracle_op = Operator(oracle_circuit(target, phase=phase))
+    diffusion_op = Operator(diffusion_circuit(n_qubits, phase=phase))
 
     iters = range(1, max_iterations + 1) if max_iterations > 0 else count(1)
     for i in iters:

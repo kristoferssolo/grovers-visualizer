@@ -11,6 +11,13 @@ def oracle(qc: QuantumCircuit, target_state: QubitState) -> None:
     encode_target_state(qc, target_state)  # Undo
 
 
+def oracle_circuit(target: QubitState) -> QuantumCircuit:
+    n = len(target)
+    qc = QuantumCircuit(n)
+    oracle(qc, target)
+    return qc
+
+
 def diffusion(qc: QuantumCircuit, n: int) -> None:
     """Apply the Grovers diffusion operator."""
     qc.h(range(n))
@@ -18,6 +25,12 @@ def diffusion(qc: QuantumCircuit, n: int) -> None:
     apply_phase_inversion(qc, n)
     qc.x(range(n))
     qc.h(range(n))
+
+
+def diffusion_circuit(n: int) -> QuantumCircuit:
+    qc = QuantumCircuit(n)
+    diffusion(qc, n)
+    return qc
 
 
 def encode_target_state(qc: QuantumCircuit, target_state: QubitState) -> None:

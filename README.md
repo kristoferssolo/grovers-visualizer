@@ -2,11 +2,9 @@
 
 A tiny Python package that steps through Grover’s Search algorithm and shows you, after each iteration:
 
-- A bar‐chart of amplitudes (or probabilities)  
-- A sine‐curve of success‐probability vs. iteration  
-- A geometric "rotation" on the unit circle  
-
-Choose between a Matplotlib-based CLI or an optional DearPyGui GUI (WIP).
+- A bar‐chart of amplitudes (or probabilities)
+- A sine‐curve of success‐probability vs. iteration
+- A geometric "rotation" on the unit circle
 
 ---
 
@@ -16,71 +14,37 @@ Choose between a Matplotlib-based CLI or an optional DearPyGui GUI (WIP).
 
 ## Installation
 
-### Via [pipx](https://pipx.pypa.io/stable/installation/)
-
-Basic (CLI only):
-
-```bash
-pipx install grovers-visualizer
-grovers-visualizer 1111
-```
-
-With the optional DearPyGui UI (WIP):
-
-```bash
-pipx "grovers-visualizer[ui]"
-grovers-visualizer --ui
-```
-
-### Via [uvx](https://docs.astral.sh/uv/guides/tools/)
-
-Basic (CLI only):
+### Using [uv](https://docs.astral.sh/uv/)/[uvx](https://docs.astral.sh/uv/guides/tools/)
 
 ```bash
 uvx grovers-visualizer 1111
 ```
 
-With the optional UI extra:
+### Using [pip](https://pypi.org/project/pip/)/[pipx](https://pipx.pypa.io/stable/installation/)
 
 ```bash
-uvx "grovers-visualizer[ui]" --ui
+pip grovers-visualizer
+# or
+pipx grovers-visualizer # (recommended)
+
+# and then run
+grovers-visualizer
 ```
 
 ---
 
 ## Usage
 
-### CLI Mode
-
-Flags:
+### Flags
 
 - `TARGET`  
- Target bit‐string (e.g. `010`). Length determines number of qubits.  
-- `-s, --speed SPEED`  
- Delay between iterations (seconds). Default `0.5`.  
+ Target bit‐string (e.g. `010`). Length also determines number of qubits.  
 - `-i, --iterations ITERATIONS`  
  Max iterations; `0` means use the optimal $\lfloor\frac\pi4\sqrt{2^n}\rfloor$.  
+- `-s, --speed SPEED`  
+ Delay between iterations (seconds). Default `0.5`.  
 - `-p, --phase PHASE`  
   The phase $\psi$ (in radians) used for both the oracle and diffusion steps. Defaults to $\pi$ (i.e. a sign-flip, $e^{i\pi}=-1$).
-- `--ui`  
- Launch the optional DearPyGui GUI (requires the `[ui]` extra) (WIP).
-
-### GUI Mode (WIP)
-
-If you installed with `"[ui]"`, launch the DearPyGui window:
-
-```
-grovers-visualizer --ui
-```
-
-In the UI you can:
-
-- Set number of qubits  
-- Enter the target bit‐string  
-- Choose max iterations or leave at 0 for optimal  
-- Control the animation speed  
-
-Hit **Start** to watch the bar chart, sine plot, and rotation‐circle update in real time.
 
 ---
 
